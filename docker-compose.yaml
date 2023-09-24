@@ -1,5 +1,16 @@
 # volumes:
 services:
+  postgres:
+        build:
+            context: ./relational-data
+            dockerfile: ./Dockerfile.dev
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_MULTIPLE_DATABASES=account,collection
+            - POSTGRES_PASSWORD=test-databases
+        ports:
+            - 15432:5432
   fastapi:
     environment:
       CORS_HOST: http://localhost:3000
@@ -24,4 +35,5 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+      REACT_APP_ACCOUNTS_HOST: http://localhost:8080
+      REACT_APP_INVENTORY_HOST: http://localhost:8090
